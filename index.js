@@ -2,9 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import { registerValidation } from './validation/validation.js';
+import { registerValidation, loginValidation } from './validation/validations.js';
 import { checkAuth } from './utils/checkAuth.js';
-import * as UserController from './controllers/UserController.js';
+
+import * as UserController from './controllers/userController.js';
+import * as BasketControlelr from './controllers/basketController.js';
 
 dotenv.config();
 
@@ -24,7 +26,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/auth/login', UserController.login);
+app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
