@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="auto-parts-store-db" id="Project-3f3" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="auto-parts-store-db" >
+		<table name="basket" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="user_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_basket" unique="PRIMARY_KEY" >
+				<column name="_id" />
+				<column name="user_id" />
+			</index>
+			<index name="unq__id" unique="UNIQUE_INDEX" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_basket_user" to_schema="auto-parts-store-db.INSTANCE" to_table="user" type="Identifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="user_id" pk="_id" />
+			</fk>
+		</table>
+		<table name="basket_part" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="part_id" type="INT" jt="4" mandatory="y" />
+			<column name="basket_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_basket_device" unique="PRIMARY_KEY" >
+				<column name="_id" />
+				<column name="basket_id" />
+				<column name="part_id" />
+			</index>
+			<fk name="fk_basket_part_basket" to_schema="auto-parts-store-db.INSTANCE" to_table="basket" type="Identifying" mandatory="n" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="basket_id" pk="_id" />
+			</fk>
+			<fk name="fk_basket_part_part" to_schema="auto-parts-store-db.INSTANCE" to_table="part" type="Identifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="part_id" pk="_id" />
+			</fk>
+		</table>
+		<table name="brand" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<index name="pk_brand" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="part" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="price" type="INT" jt="4" mandatory="y" />
+			<column name="rating" type="INT" jt="4" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="img" type="VARCHAR" length="200" jt="12" />
+			<column name="type_id" type="INT" jt="4" mandatory="y" />
+			<column name="brand_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_part" unique="PRIMARY_KEY" >
+				<column name="_id" />
+				<column name="type_id" />
+				<column name="brand_id" />
+			</index>
+			<index name="unq__id" unique="UNIQUE_INDEX" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_part_type" to_schema="auto-parts-store-db.INSTANCE" to_table="type" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="type_id" pk="_id" />
+			</fk>
+			<fk name="fk_part_brand" to_schema="auto-parts-store-db.INSTANCE" to_table="brand" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="brand_id" pk="_id" />
+			</fk>
+		</table>
+		<table name="part_info" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="part_id" type="INT" jt="4" mandatory="y" />
+			<column name="title" type="CHAR" length="100" jt="1" mandatory="y" />
+			<column name="description" type="CHAR" length="500" jt="1" mandatory="y" />
+			<index name="pk_part_info" unique="PRIMARY_KEY" >
+				<column name="_id" />
+				<column name="part_id" />
+			</index>
+			<fk name="fk_part_info_part" to_schema="auto-parts-store-db.INSTANCE" to_table="part" type="Identifying" mandatory="n" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="part_id" pk="_id" />
+			</fk>
+		</table>
+		<table name="rating" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="user_id" type="INT" jt="4" mandatory="y" />
+			<column name="part_id" type="INT" jt="4" mandatory="y" />
+			<column name="rate" type="INT" jt="4" mandatory="y" />
+			<index name="pk_rating" unique="PRIMARY_KEY" >
+				<column name="_id" />
+				<column name="user_id" />
+				<column name="part_id" />
+			</index>
+			<fk name="fk_rating_user" to_schema="auto-parts-store-db.INSTANCE" to_table="user" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="user_id" pk="_id" />
+			</fk>
+			<fk name="fk_rating_part" to_schema="auto-parts-store-db.INSTANCE" to_table="part" type="Identifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="part_id" pk="_id" />
+			</fk>
+		</table>
+		<table name="type" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<index name="pk_type" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_type_brand" to_schema="auto-parts-store-db.INSTANCE" to_table="brand" type="ManyToMany" mandatory="n" cardinality="ZeroMore" range_from="0" range_to="0" />
+		</table>
+		<table name="user" >
+			<column name="_id" type="INT" jt="4" mandatory="y" />
+			<column name="email" type="CHAR" length="50" jt="1" mandatory="y" />
+			<column name="password" type="CHAR" length="50" jt="1" mandatory="y" />
+			<column name="role" type="CHAR" length="50" jt="1" mandatory="y" />
+			<index name="pk_user" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-2ee" show_relation="columns" >
+		<entity schema="auto-parts-store-db.INSTANCE" name="basket" color="C1D8EE" x="288" y="64" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="basket_part" color="C1D8EE" x="528" y="64" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="brand" color="C1D8EE" x="560" y="352" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="part" color="C1D8EE" x="752" y="80" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="part_info" color="C1D8EE" x="1040" y="96" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="rating" color="C1D8EE" x="176" y="288" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="type" color="C1D8EE" x="896" y="384" />
+		<entity schema="auto-parts-store-db.INSTANCE" name="user" color="C1D8EE" x="48" y="48" />
+	</layout>
+</project>
