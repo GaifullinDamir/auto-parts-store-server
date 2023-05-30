@@ -1,16 +1,22 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const _HOST = 'http://localhost:';
-const _PORT = 8080;
-const _dbName = 'auto-parts-store-db';
+dotenv.config();
 
-mongoose.connect(`mongodb://127.0.0.1:27017/${_dbName}`).
+const _HOST = process.env.HOST;
+const _PORT = process.env.PORT;
+const _DB_HOST = process.env.DB_HOST;
+const _DB_PORT = process.env.DB_PORT;
+const _DB_NAME = process.env.DB_NAME;
+const _SECRET_KEY = process.env.SECRET_KEY;
+
+mongoose.connect(`${_DB_HOST}${_DB_PORT}/${_DB_NAME}`).
     then(() => {
-        console.log(`Connection with the database "${_dbName}" is established.`);
+        console.log(`Connection with the database "${_DB_NAME}" is TRUE.`);
     }).
-    catch((error) => console.log(`The following error occurred while connecting to the "${_dbName}" database:`, error));
+    catch((error) => console.log(`The following ERROR occurred while connecting to the "${_DB_NAME}" database: `, error));
 
 const app = express();
 
@@ -27,7 +33,7 @@ app.post('/auth/login', (req, res) => {
         email: req.body.email,
         fullName: 'Вася Пупкин',
     }, 
-    'secretkey',
+    _SECRET_KEY,
     );
 
     res.json({
@@ -36,10 +42,10 @@ app.post('/auth/login', (req, res) => {
     });
 });
 
-app.listen(_PORT, (err) => {
-    if (err) {
-        return console.log(err);
+app.listen(_PORT, (error) => {
+    if (error) {
+        return console.log(`An ERROR occurred while connecting to the server using the URL: ${_HOST}${_PORT}: `, error);
     }
-    console.log(`The server is running. URL: ${_HOST}${_PORT}`);
+    console.log(`The server is running - TRUE. URL: ${_HOST}${_PORT}`);
 });
 
