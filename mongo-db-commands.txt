@@ -1,0 +1,14 @@
+db.createCollection('users')
+
+db.users.insertOne({
+    "email": "gaifullindr@gmail.com",
+    "password": "simple_password",
+    "role": "buyer"
+})
+
+db.users.insertMany([
+    {"email": "1@mail.com", "password": "password_1", "role": "manager"},
+    {"email": "2@mail.com", "password": "password_2", "role": "buyer"},
+    {"email": "3@mail.com", "password": "password_3", "role": "manager"},
+    {"email": "4@mail.com", "password": "password_4", "role": "manager"}
+])
