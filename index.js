@@ -30,6 +30,8 @@ app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
+app.get('/')
+
 app.listen(_PORT, (error) => {
     if (error) {
         return console.log(`An ERROR occurred while connecting to the server using the URL: ${_HOST}${_PORT}: `, error);

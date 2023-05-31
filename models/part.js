@@ -19,13 +19,15 @@ const PartSchema = new mongoose.Schema({
         type: String,
         reqired: true
     },
-    type: {
-        type: String,
-        reqired: true
+    brand: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Brand',
+        required: true,
     },
     brand: {
-        type: String,
-        reqired: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Type',
+        required: true,
     },
 
 }, {
