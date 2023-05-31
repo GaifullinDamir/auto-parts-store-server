@@ -1,7 +1,7 @@
 import PartModel from '../models/part.js';
 import PartInfoModel from '../models/partInfo.js';
 
-export const createPart = async(req, res) => {
+export const createPart = async (req, res) => {
     try {
         let {name, price, imgUrl, brandId, typeId, info} = req.body;
 
@@ -35,7 +35,7 @@ export const createPart = async(req, res) => {
     }
 };
 
-export const getAllParts = async(req, res) => {
+export const getAllParts = async (req, res) => {
     try {
         const parts = await PartModel.find();
 
@@ -48,7 +48,7 @@ export const getAllParts = async(req, res) => {
     }
 }
 
-export const getOnePart = async(req, res) => {
+export const getOnePart = async (req, res) => {
     try {
         const partId = req.params.id;
         const part = await BasketModel.findOne({_id: partId});
@@ -94,7 +94,7 @@ export const updatePart = async (req, res) => {
     }
 }; 
 
-export const removePart = (req, res) => {
+export const removePart = async (req, res) => {
     try {
         const partId = req.params.id;
 
@@ -123,6 +123,41 @@ export const removePart = (req, res) => {
         console.log('Error when deleting a part: ', error);
         return res.status(500).json({
             message: 'Error when deleting a part.',
+        });
+    }
+};
+
+export const getPartInfo = async (req, res) => {
+    try {
+        const partId = req.params.id;
+        const partInfo = await PartInfoModel.findOne({part: partId});
+
+        res.json(partInfo);
+    } catch (error) {
+        console.log('Failed to get part info', error);
+        res.status(500).json({
+            message: 'Failed to get part info.',
+        });
+    }
+};
+
+export const updatePartInfo = async(req, res) => {
+    try{
+        const partId = req.params.id;
+        await PartInfoModel.updateOne({
+            part: partId
+        }, {
+            title: req.body.title,
+            descritpion: req.body.descripton,
+        });
+        
+        res.json({
+            success: true,
+        })
+    } catch (error) {
+        console.log('The part info update failed.: ', error);
+        res.status(500).json({
+            message: 'The part info update failed.',
         });
     }
 }

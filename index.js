@@ -5,9 +5,16 @@ import multer from 'multer';
 
 import { registerValidation, loginValidation } from './validation/validations.js';
 
-import { handleValidationErrors, checkAuth } from './utils/index.js';
+import { handleValidationErrors, checkAuth } from './middleware/index.js';
 
-import { UserController, BasketController, BasketPartController, PartController } from './controllers/index.js';
+import { UserController,
+    BasketController, 
+    BasketPartController, 
+    PartController,
+    PartInfoController, 
+    TypeController,
+    BrandController 
+} from './controllers/index.js';
 
 dotenv.config();
 
@@ -46,19 +53,35 @@ app.get('/auth/user', checkAuth, UserController.getUser);
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({
-        url: `/uploads/${req.file.originalname}`,
+        url: `/storage/${req.file.originalname}`,
     });
 })
 
 app.post('/basket', checkAuth, BasketController.create);
 app.get('/basket', checkAuth, BasketController.getOne);
-// app.delete('/basket', BasketController.remove);
-// app.patch('/basket', BasketController.update); 
 
 app.post('/basket-part',  checkAuth, BasketController.create);
-// app.delete('/basket-part/:id', checkAuth, BasketController.remove);
 
-app.patch('/part/:id', checkAuth, PartController.update);
+app.post('/part', checkAuth, PartController.createPart);
+app.get('/part', PartController.getAllParts);
+app.get('/part/:id', PartController.getOnePart);
+app.delete('/part/:id', checkAuth, PartController.removePart);
+app.patch('/part/:id', checkAuth, PartController.updatePart);
+
+app.get('/part-info/:partId', PartInfoController.getPartInfo);
+app.patch('/part-info/:partId', checkAuth, PartInfoController.updatePartInfo);
+
+app.post('/type', checkAuth, TypeController.create);
+app.get('/type', TypeController.getAll);
+app.get('/type/:id', TypeController.getOne);
+app.delete('/type/:id', TypeController.remove);
+app.patch('/type/:id', TypeController.update);
+
+app.post('/brand', checkAuth, BrandController.create);
+app.get('/brand', BrandController.getAll);
+app.get('/brand/:id', BrandController.getOne);
+app.delete('/brand/:id', BrandController.remove);
+app.patch('/brand/:id', BrandController.update);
 
 app.listen(_PORT, (error) => {
     if (error) {
