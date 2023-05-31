@@ -11,7 +11,7 @@ const PartSchema = new mongoose.Schema({
         required: true
     },
     rating: {
-        type: String,
+        type: Number,
         required: true, 
         default: 0
     },
@@ -19,7 +19,15 @@ const PartSchema = new mongoose.Schema({
         type: String,
         reqired: true
     },
-    
+    type: {
+        type: String,
+        reqired: true
+    },
+    brand: {
+        type: String,
+        reqired: true
+    },
+
 }, {
     timestamps: true,
 });

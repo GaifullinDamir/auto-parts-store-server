@@ -1,14 +1,181 @@
-db.createCollection('users')
+CREATE DATABASE '"auto-parts-store-db"'
 
-db.users.insertOne({
-    "email": "gaifullindr@gmail.com",
-    "password": "simple_password",
-    "role": "buyer"
-})
+use('auto-parts-store-db');db.createCollection('brand',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "bsonType": "string"
+    },
+    "id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
 
-db.users.insertMany([
-    {"email": "1@mail.com", "password": "password_1", "role": "manager"},
-    {"email": "2@mail.com", "password": "password_2", "role": "buyer"},
-    {"email": "3@mail.com", "password": "password_3", "role": "manager"},
-    {"email": "4@mail.com", "password": "password_4", "role": "manager"}
-])
+use('auto-parts-store-db');db.createCollection('type',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "bsonType": "string"
+    },
+    "id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('type brand',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "properties": {}
+} }});
+
+use('auto-parts-store-db');db.createCollection('user',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "email",
+    "password",
+    "role"
+  ],
+  "properties": {
+    "password": {
+      "bsonType": "string"
+    },
+    "role": {
+      "bsonType": "string"
+    },
+    "id": {
+      "bsonType": "objectId"
+    },
+    "email": {
+      "bsonType": "string"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('basket',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "user id"
+  ],
+  "properties": {
+    "user id": {
+      "bsonType": "objectId"
+    },
+    "id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('part',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "name",
+    "price",
+    "rating",
+    "type id",
+    "brand id"
+  ],
+  "properties": {
+    "img": {
+      "bsonType": "string"
+    },
+    "type id": {
+      "bsonType": "objectId"
+    },
+    "price": {
+      "bsonType": "int"
+    },
+    "name": {
+      "bsonType": "string"
+    },
+    "rating": {
+      "bsonType": "int"
+    },
+    "id": {
+      "bsonType": "objectId"
+    },
+    "brand id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('part info',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "part id",
+    "title",
+    "description"
+  ],
+  "properties": {
+    "part id": {
+      "bsonType": "objectId"
+    },
+    "description": {
+      "bsonType": "string"
+    },
+    "id": {
+      "bsonType": "objectId"
+    },
+    "title": {
+      "bsonType": "string"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('rating',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "user id",
+    "part id",
+    "rate"
+  ],
+  "properties": {
+    "part id": {
+      "bsonType": "objectId"
+    },
+    "rate": {
+      "bsonType": "int"
+    },
+    "user id": {
+      "bsonType": "objectId"
+    },
+    "id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
+
+use('auto-parts-store-db');db.createCollection('basket part',{ validator: { $jsonSchema: {
+  "bsonType": "object",
+  "required": [
+    "id",
+    "part id",
+    "basket id"
+  ],
+  "properties": {
+    "part id": {
+      "bsonType": "objectId"
+    },
+    "basket id": {
+      "bsonType": "objectId"
+    },
+    "id": {
+      "bsonType": "objectId"
+    }
+  }
+} }});
