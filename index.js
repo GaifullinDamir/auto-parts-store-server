@@ -4,12 +4,10 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 
 import { registerValidation, loginValidation } from './validation/validations.js';
-import { checkAuth } from './utils/checkAuth.js';
 
-import * as UserController from './controllers/userController.js';
-import * as BasketController from './controllers/basketController.js';
-import * as BasketPartController from './controllers/basketPartController.js';
-import * as PartController from './controllers/partController.js';
+import { handleValidationErrors, checkAuth } from './utils/index.js';
+
+import { UserController, BasketController, BasketPartController, PartController } from './controllers/index.js';
 
 dotenv.config();
 
@@ -42,8 +40,8 @@ app.use(express.json());
 
 app.use('/uploads/', express.static('uploads'));
 
-app.post('/auth/login', loginValidation, UserController.login);
-app.post('/auth/register', registerValidation, UserController.register);
+app.post('/auth/login', loginValidation, handleValidationErrors,  UserController.login);
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
