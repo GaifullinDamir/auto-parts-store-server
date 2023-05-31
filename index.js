@@ -6,7 +6,7 @@ import { registerValidation, loginValidation } from './validation/validations.js
 import { checkAuth } from './utils/checkAuth.js';
 
 import * as UserController from './controllers/userController.js';
-import * as BasketControlelr from './controllers/basketController.js';
+import * as BasketController from './controllers/basketController.js';
 
 dotenv.config();
 
@@ -30,7 +30,11 @@ app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
-app.get('/')
+app.get('/basket', BasketController.getAll);
+// app.get('/basket/:id', BasketController.getOne);
+app.post('/basket', checkAuth, BasketController.create);
+// app.delete('/basket', BasketController.remove);
+// app.patch('/basket', BasketController.update); 
 
 app.listen(_PORT, (error) => {
     if (error) {

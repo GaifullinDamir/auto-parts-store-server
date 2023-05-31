@@ -24,7 +24,7 @@ const PartSchema = new mongoose.Schema({
         ref: 'Brand',
         required: true,
     },
-    brand: {
+    type: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Type',
         required: true,

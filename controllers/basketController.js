@@ -19,3 +19,20 @@ export const create = async (req, res) => {
         });
     }
 };
+
+export const getAll = async (req, res) => {
+    try {
+        const baskets = await BasketModel.find().populate('user').exec();
+
+        res.json(baskets);
+    } catch (error) {
+        console.log('Failed to get baskets information: ', error);
+        res.status(500).json({
+            message: 'Failed to get baskets information.',
+        });
+    }
+}
+
+export const getOne = async(req, res) => {
+
+}

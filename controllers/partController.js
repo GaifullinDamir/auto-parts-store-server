@@ -7,8 +7,9 @@ export const create = (req, res) => {
         const doc = new PartModel({
             name,
             price,
-            
-
+            brand,
+            type,
+            img
         })
 
         const basket = await doc.save();
