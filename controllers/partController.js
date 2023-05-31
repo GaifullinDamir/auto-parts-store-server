@@ -32,7 +32,7 @@ export const update = async (req, res) => {
             name: req.body.name,
             price: req.body.price,
             rating: req.body.rating,
-            img: req.body.img,
+            imgUrl: req.body.imgUrl,
             brand: req.body.brandId,
             type: req.body.typeId
         })
@@ -50,7 +50,7 @@ export const update = async (req, res) => {
     } catch (error) {
         console.log('The part update failed.: ', error);
         res.status(500).json({
-            message: 'The part update failed..',
+            message: 'The part update failed.',
         });
     }
 }; 

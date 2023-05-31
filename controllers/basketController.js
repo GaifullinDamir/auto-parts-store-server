@@ -5,7 +5,7 @@ export const create = async (req, res) => {
     try {
         const doc = new BasketModel({
             user: req.userId,
-        })
+        });
 
         const basket = await doc.save();
 
@@ -29,7 +29,7 @@ export const getAll = async (req, res) => {
             message: 'Failed to get baskets information.',
         });
     }
-}
+};
 
 export const getOne = async(req, res) => {
     try {
@@ -43,4 +43,4 @@ export const getOne = async(req, res) => {
             message: 'Failed to get basket information.',
         });
     }
-}
+};

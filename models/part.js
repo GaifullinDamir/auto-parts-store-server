@@ -15,7 +15,7 @@ const PartSchema = new mongoose.Schema({
         required: true, 
         default: 0
     },
-    img: {
+    imgUrl: {
         type: String,
         reqired: true
     },
