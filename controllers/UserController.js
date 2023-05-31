@@ -10,6 +10,13 @@ const _SECRET_KEY = process.env.SECRET_KEY;
 export const register = async (req, res) => {
     try{
         
+        const userFind = await UserModel.find({email: req.body.email});
+        console.log(userFind);
+        if(userFind.length !== 0) {
+            return res.status(403).json({
+                message: 'User is exist.',
+            });
+        }
 
         const password = req.body.password;
         const salt = await bcrypt.genSalt(10);
@@ -25,6 +32,7 @@ export const register = async (req, res) => {
 
         const token = jwt.sign({
                 _id: user._id,
+                role: user.role,
             }, 
             _SECRET_KEY,
             {
@@ -72,6 +80,7 @@ export const login = async(req, res) => {
 
         const token = jwt.sign({
                 _id: user._id,
+                role: user.role,
             }, 
             _SECRET_KEY,
             {
@@ -108,9 +117,9 @@ export const getUser = async (req, res) => {
 
         res.json(userData);
     } catch (error) {
-        console.log('No access.:', error);
+        console.log('Access denied:', error);
         res.status(500).json({
-            message: 'No access.',
+            message: 'Access denied.',
         });
     }
 };

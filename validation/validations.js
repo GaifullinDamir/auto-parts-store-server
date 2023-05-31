@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 export const registerValidation = [
     body('email', 'Email must be provided.').isEmail(),
     body('password', 'Password length must be at least 6 characters.').isLength({ min: 6 }),
-    body('role', 'Role is buyer or admin.').matches('buyer' || 'admin'),
+    body('role', 'Role is buyer or admin.').contains(('buyer', 'admin')),
 ];
 
 export const loginValidation = [

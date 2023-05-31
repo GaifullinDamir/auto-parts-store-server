@@ -11,8 +11,8 @@ export const checkAuth = (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, _SECRET_KEY);
-
             req.userId = decoded._id;
+            req.role = decoded.role;
             next();
         } catch (error) {
             return res.status(403).json({

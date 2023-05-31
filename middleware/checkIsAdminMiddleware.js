@@ -1,5 +1,6 @@
-export default (req, res, next) => {
 
+
+export default (req, res, next) => {
     if(req.role === 'admin')
     {
         next();
@@ -8,5 +9,4 @@ export default (req, res, next) => {
             message: 'Access denied.',
         });
     }
-
-}
+};

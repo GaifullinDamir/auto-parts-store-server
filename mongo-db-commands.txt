@@ -1,3 +1,17 @@
+{
+    "email": "gaifullin@yandex.ru",
+    "password": "simple_password",
+    "role": "admin"
+}
+
+{
+    "email": "gorohovas@yandex.ru",
+    "password": "simple_password",
+    "role": "buyer"
+}
+
+
+
 CREATE DATABASE '"auto-parts-store-db"'
 
 use('auto-parts-store-db');db.createCollection('brand',{ validator: { $jsonSchema: {
