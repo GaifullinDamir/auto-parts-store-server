@@ -16,12 +16,12 @@ export const checkAuth = (req, res, next) => {
             next();
         } catch (error) {
             return res.status(403).json({
-                message: 'No access.',
+                message: 'Access denied.',
             });
         }
     } else {
         return res.status(403).json({
-            message: 'No access.',
+            message: 'Access denied.',
         });
     }
 };

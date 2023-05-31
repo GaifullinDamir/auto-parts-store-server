@@ -5,13 +5,12 @@ import multer from 'multer';
 
 import { registerValidation, loginValidation } from './validation/validations.js';
 
-import { handleValidationErrors, checkAuth } from './middleware/index.js';
+import { handleValidationErrors, checkIsAdmin, checkAuth } from './middleware/index.js';
 
 import { UserController,
     BasketController, 
     BasketPartController, 
     PartController,
-    PartInfoController, 
     TypeController,
     BrandController 
 } from './controllers/index.js';
@@ -51,7 +50,7 @@ app.post('/auth/login', loginValidation, handleValidationErrors,  UserController
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+app.post('/upload', checkAuth, checkIsAdmin, upload.single('image'), (req, res) => {
     res.json({
         url: `/storage/${req.file.originalname}`,
     });
@@ -60,28 +59,28 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 app.post('/basket', checkAuth, BasketController.create);
 app.get('/basket', checkAuth, BasketController.getOne);
 
-app.post('/basket-part',  checkAuth, BasketController.create);
+app.post('/basket-part', checkAuth, BasketController.create);
 
-app.post('/part', checkAuth, PartController.createPart);
+app.post('/part', checkAuth, checkIsAdmin, PartController.createPart);
 app.get('/part', PartController.getAllParts);
 app.get('/part/:id', PartController.getOnePart);
 app.delete('/part/:id', checkAuth, PartController.removePart);
-app.patch('/part/:id', checkAuth, PartController.updatePart);
+app.patch('/part/:id', checkAuth, checkIsAdmin, PartController.updatePart);
 
-app.get('/part-info/:partId', PartInfoController.getPartInfo);
-app.patch('/part-info/:partId', checkAuth, PartInfoController.updatePartInfo);
+app.get('/part-info/:partId', PartController.getPartInfo);
+app.patch('/part-info/:partId', checkAuth, checkIsAdmin, PartController.updatePartInfo);
 
-app.post('/type', checkAuth, TypeController.create);
+app.post('/type', checkAuth, checkIsAdmin, TypeController.create);
 app.get('/type', TypeController.getAll);
 app.get('/type/:id', TypeController.getOne);
-app.delete('/type/:id', TypeController.remove);
-app.patch('/type/:id', TypeController.update);
+app.delete('/type/:id', checkAuth, checkIsAdmin, TypeController.remove);
+app.patch('/type/:id', checkAuth, checkIsAdmin, TypeController.update);
 
-app.post('/brand', checkAuth, BrandController.create);
+app.post('/brand', checkAuth, checkIsAdmin, BrandController.create);
 app.get('/brand', BrandController.getAll);
 app.get('/brand/:id', BrandController.getOne);
-app.delete('/brand/:id', BrandController.remove);
-app.patch('/brand/:id', BrandController.update);
+app.delete('/brand/:id',checkAuth, checkIsAdmin, BrandController.remove);
+app.patch('/brand/:id', checkAuth, checkIsAdmin, BrandController.update);
 
 app.listen(_PORT, (error) => {
     if (error) {
