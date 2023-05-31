@@ -1,20 +1,32 @@
 import PartModel from '../models/part.js';
 import PartInfoModel from '../models/partInfo.js';
 
-export const create = async(req, res) => {
+export const createPart = async(req, res) => {
     try {
-        let {name, price, brand, type, info} = req.body
+        let {name, price, imgUrl, brandId, typeId, info} = req.body;
+
         const doc = new PartModel({
             name,
             price,
-            brand,
-            type,
-            img
-        })
+            imgUrl,
+            brandId,
+            typeId
+        });
 
-        const basket = await doc.save();
+        const part = await doc.save();
 
-        res.json(basket);
+        if (info) {
+            info = JSON.parse(info)
+            info.forEach(info =>
+                PartInfo.create({
+                    title: info.title,
+                    description: info.description,
+                    partId: part._id
+                })
+            );
+        };
+
+        res.json(part);
     } catch (error) {
         console.log('Part creation failed: ', error);
         res.status(500).json({
@@ -23,7 +35,34 @@ export const create = async(req, res) => {
     }
 };
 
-export const update = async (req, res) => {
+export const getAllParts = async(req, res) => {
+    try {
+        const parts = await PartModel.find();
+
+        res.json(parts);
+    } catch (error) {
+        console.log('Failed to get parts: ', error);
+        res.status(500).json({
+            message: 'Failed to get parts.',
+        });
+    }
+}
+
+export const getOnePart = async(req, res) => {
+    try {
+        const partId = req.params.id;
+        const part = await BasketModel.findOne({_id: partId});
+
+        res.json(part);
+    } catch (error) {
+        console.log('Failed to get part: ', error);
+        res.status(500).json({
+            message: 'Failed to get part.',
+        });
+    }
+};
+
+export const updatePart = async (req, res) => {
     try{
         const partId = req.params.id;
         await PartModel.updateOne({
@@ -54,3 +93,36 @@ export const update = async (req, res) => {
         });
     }
 }; 
+
+export const removePart = (req, res) => {
+    try {
+        const partId = req.params.id;
+
+        PartModel.findOneAndDelete({
+                _id: partId
+            },
+            (error, doc) => {
+                if (error) {
+                    console.log('Error when deleting a part: ', error);
+                    return res.status(500).json({
+                        message: 'Error when deleting a part.',
+                    });
+                }
+
+                if (!doc) {
+                    return res.status(404).json({
+                        message: 'Part not found.',
+                    })
+                }
+
+                res.json({
+                    success: true
+                });
+            });
+    } catch (error) {
+        console.log('Error when deleting a part: ', error);
+        return res.status(500).json({
+            message: 'Error when deleting a part.',
+        });
+    }
+}
