@@ -46,41 +46,41 @@ app.use(express.json());
 
 app.use('/uploads/', express.static('uploads'));
 
-app.post('/auth/login', loginValidation, handleValidationErrors,  UserController.login);
-app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
-app.get('/auth/user', checkAuth, UserController.getUser);
+app.post('api/auth/login', loginValidation, handleValidationErrors,  UserController.login);
+app.post('api/auth/register', registerValidation, handleValidationErrors, UserController.register);
+app.get('api/auth/user', checkAuth, UserController.getUser);
 
 app.post('/upload', checkAuth, checkIsAdmin, upload.single('image'), (req, res) => {
     res.json({
-        url: `/storage/${req.file.originalname}`,
+        url: `/upload/${req.file.originalname}`,
     });
 })
 
-app.post('/basket', checkAuth, BasketController.create);
-app.get('/basket', checkAuth, BasketController.getOne);
+app.post('api/basket', checkAuth, BasketController.create);
+app.get('api/basket', checkAuth, BasketController.getOne);
 
-app.post('/basket-part', checkAuth, BasketController.create);
+app.post('api/basket-part', checkAuth, BasketController.create);
 
-app.post('/part', checkAuth, checkIsAdmin, PartController.createPart);
-app.get('/part', PartController.getAllParts);
-app.get('/part/:id', PartController.getOnePart);
-app.delete('/part/:id', checkAuth, PartController.removePart);
-app.patch('/part/:id', checkAuth, checkIsAdmin, PartController.updatePart);
+app.post('api/part', checkAuth, checkIsAdmin, PartController.createPart);
+app.get('api/part', PartController.getAllParts);
+app.get('api/part/:id', PartController.getOnePart);
+app.delete('api/part/:id', checkAuth, PartController.removePart);
+app.patch('api/part/:id', checkAuth, checkIsAdmin, PartController.updatePart);
 
-app.get('/part-info/:partId', PartController.getPartInfo);
-app.patch('/part-info/:partId', checkAuth, checkIsAdmin, PartController.updatePartInfo);
+app.get('api/part-info/:partId', PartController.getPartInfo);
+app.patch('api/part-info/:partId', checkAuth, checkIsAdmin, PartController.updatePartInfo);
 
-app.post('/type', checkAuth, checkIsAdmin, TypeController.create);
-app.get('/type', TypeController.getAll);
-app.get('/type/:id', TypeController.getOne);
-app.delete('/type/:id', checkAuth, checkIsAdmin, TypeController.remove);
-app.patch('/type/:id', checkAuth, checkIsAdmin, TypeController.update);
+app.post('api/type', checkAuth, checkIsAdmin, TypeController.create);
+app.get('api/type', TypeController.getAll);
+app.get('api/type/:id', TypeController.getOne);
+app.delete('api/type/:id', checkAuth, checkIsAdmin, TypeController.remove);
+app.patch('api/type/:id', checkAuth, checkIsAdmin, TypeController.update);
 
-app.post('/brand', checkAuth, checkIsAdmin, BrandController.create);
-app.get('/brand', BrandController.getAll);
-app.get('/brand/:id', BrandController.getOne);
-app.delete('/brand/:id',checkAuth, checkIsAdmin, BrandController.remove);
-app.patch('/brand/:id', checkAuth, checkIsAdmin, BrandController.update);
+app.post('api/brand', checkAuth, checkIsAdmin, BrandController.create);
+app.get('api/brand', BrandController.getAll);
+app.get('api/brand/:id', BrandController.getOne);
+app.delete('api/brand/:id',checkAuth, checkIsAdmin, BrandController.remove);
+app.patch('api/brand/:id', checkAuth, checkIsAdmin, BrandController.update);
 
 app.listen(_PORT, (error) => {
     if (error) {

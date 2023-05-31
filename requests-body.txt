@@ -1,0 +1,18 @@
+{
+    "email": "gaifullin@yande.ru",
+    "password": "simple_password",
+    "role": "admin"
+}
+
+{
+    "name": "Michelin"
+}
+
+{
+    "name": "Покрышки"
+}
+
+{
+    "email": "gaifullin@yandex.ru",
+    "password": "simple_password"
+}
