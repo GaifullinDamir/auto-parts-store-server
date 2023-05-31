@@ -1,7 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import multer from 'multer';
+
+config();
 
 import { registerValidation, loginValidation } from './validation/validations.js';
 
@@ -14,8 +16,11 @@ import { UserController,
     TypeController,
     BrandController 
 } from './controllers/index.js';
+import { config } from 'dotenv';
 
-dotenv.config();
+
+
+console.log(process.env);
 
 const _HOST = process.env.HOST;
 const _PORT = process.env.PORT;
@@ -30,6 +35,7 @@ mongoose.connect(`${_DB_HOST}${_DB_PORT}/${_DB_NAME}`).
     catch((error) => console.log(`The following ERROR occurred while connecting to the "${_DB_NAME}" database: `, error));
 
 const app = express();
+
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) =>{
@@ -83,9 +89,11 @@ app.delete('api/brand/:id',checkAuth, checkIsAdmin, BrandController.remove);
 app.patch('api/brand/:id', checkAuth, checkIsAdmin, BrandController.update);
 
 app.listen(_PORT, (error) => {
+    
     if (error) {
         return console.log(`An ERROR occurred while connecting to the server using the URL: ${_HOST}${_PORT}: `, error);
     }
     console.log(`The server is running - TRUE. URL: ${_HOST}${_PORT}`);
+   
 });
 
