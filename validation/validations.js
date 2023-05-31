@@ -14,5 +14,5 @@ export const loginValidation = [
 export const partCreateValidation = [
     body('price', 'Cost - integer.').isInt(),
     body('rating', 'Rating - integer.').isInt(),
-    body('img', 'img - string.').isString(),
+    body('img', 'img - url.').isURL(),
 ];

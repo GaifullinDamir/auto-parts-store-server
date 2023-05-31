@@ -1,12 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import multer from 'multer';
 
 import { registerValidation, loginValidation } from './validation/validations.js';
 import { checkAuth } from './utils/checkAuth.js';
 
 import * as UserController from './controllers/userController.js';
 import * as BasketController from './controllers/basketController.js';
+import * as BasketPartController from './controllers/basketPartController.js';
+import * as PartController from './controllers/partController.js';
 
 dotenv.config();
 
@@ -24,16 +27,40 @@ mongoose.connect(`${_DB_HOST}${_DB_PORT}/${_DB_NAME}`).
 
 const app = express();
 
+const storage = multer.diskStorage({
+    destination: (_, __, cb) =>{
+        cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
 app.use(express.json());
+
+app.use('/uploads/', express.static('uploads'));
 
 app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+    res.json({
+        url: `/uploads/${req.file.originalname}`,
+    });
+})
+
 app.post('/basket', checkAuth, BasketController.create);
 app.get('/basket', checkAuth, BasketController.getOne);
 // app.delete('/basket', BasketController.remove);
 // app.patch('/basket', BasketController.update); 
+
+app.post('/basket-part',  checkAuth, BasketController.create);
+// app.delete('/basket-part/:id', checkAuth, BasketController.remove);
+
+app.patch('/part/:id', checkAuth, PartController.update);
 
 app.listen(_PORT, (error) => {
     if (error) {
