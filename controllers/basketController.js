@@ -34,5 +34,15 @@ export const getAll = async (req, res) => {
 }
 
 export const getOne = async(req, res) => {
+    try {
+        const userId = req.userId;
+        const basket = await BasketModel.findOne({user: userId}).populate('user').exec();
 
+        res.json(basket);
+    } catch (error) {
+        console.log('Failed to get basket information: ', error);
+        res.status(500).json({
+            message: 'Failed to get basket information.',
+        });
+    }
 }

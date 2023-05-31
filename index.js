@@ -30,9 +30,8 @@ app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 app.get('/auth/user', checkAuth, UserController.getUser);
 
-app.get('/basket', BasketController.getAll);
-// app.get('/basket/:id', BasketController.getOne);
 app.post('/basket', checkAuth, BasketController.create);
+app.get('/basket', checkAuth, BasketController.getOne);
 // app.delete('/basket', BasketController.remove);
 // app.patch('/basket', BasketController.update); 
 
