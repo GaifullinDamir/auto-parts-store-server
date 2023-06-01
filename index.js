@@ -66,7 +66,7 @@ app.get('/api/auth/user', checkAuth, UserController.getUser);
 
 app.post('/api/upload', checkAuth, checkIsAdmin, upload.single('image'), (req, res) => {
     res.json({
-        url: `/upload/${req.file.originalname}`,
+        url: `uploads/${req.file.originalname}`,
     });
 })
 
