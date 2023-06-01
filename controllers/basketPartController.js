@@ -4,16 +4,15 @@ import PartModel from '../models/part.js'
 
 export const create = async (req, res) => {
     try {
-        const basket = BasketModel.find({basket: req.body.basketId});
-        const part = PartModel.find({part:req.body.partId});
-
+        const basket = await BasketModel.findOne({_id: '6478edc7ca9b158f3ac2ccb2'});
+        const part = await PartModel.findOne({_id: req.body.partId});
         const doc = new BasketPartModel({
             fullname: req.body.fullname,
             phoneNumber: req.body.phoneNumber,
             address: req.body.address,
             orderIsPaid: req.body.orderIsPaid,
-            basket,
-            part,
+            basket: basket._id,
+            part: part._id,
         })
 
         const basketPart = await doc.save();
@@ -23,6 +22,33 @@ export const create = async (req, res) => {
         console.log('BasketPart creation failed: ', error);
         res.status(500).json({
             message: 'BasketPart creation failed.',
+        });
+    }
+};
+
+export const getAll = async (req, res) => {
+    try {
+        basketId = req.params.id;
+        const baskets = await BasketPartModel.find({basket: basketId}).populate('part').exec();
+        res.json(baskets);
+    } catch (error) {
+        console.log('Failed to get basket parts information: ', error);
+        res.status(500).json({
+            message: 'Failed to get basket parts information.',
+        });
+    }
+};
+
+export const getOne = async(req, res) => {
+    try {
+        const basketPartId = req.params.id;
+        const basketPart = await BasketModel.findOne({_id: basketPartId}).populate('user').exec();
+
+        res.json(basketPart);
+    } catch (error) {
+        console.log('Failed to get basket information: ', error);
+        res.status(500).json({
+            message: 'Failed to get basket information.',
         });
     }
 };

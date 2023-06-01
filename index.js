@@ -71,9 +71,13 @@ app.post('/api/upload', checkAuth, checkIsAdmin, upload.single('image'), (req, r
 })
 
 app.post('/api/basket', checkAuth, BasketController.create);
-app.get('/api/basket', checkAuth, BasketController.getOne);
+app.get('/api/basket/:userId', checkAuth, BasketController.getOne);
 
-app.post('/api/basket-part', checkAuth, BasketController.create);
+app.post('/api/basket-part', checkAuth, BasketPartController.create);
+app.get('/api/basket-part/:id', checkAuth, BasketPartController.getAll);
+app.get('/api/basket-part/:id', checkAuth, BasketPartController.getOne);
+app.patch('/api/basket-part/:id', checkAuth, BasketPartController.update);
+app.delete('/api/basket-part/:id', checkAuth, BasketPartController.remove);
 
 app.post('/api/part', checkAuth, checkIsAdmin, PartController.createPart);
 app.get('/api/part', PartController.getAllParts);

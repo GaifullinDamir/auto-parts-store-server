@@ -33,7 +33,7 @@ export const getAll = async (req, res) => {
 
 export const getOne = async(req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.params.userId;
         const basket = await BasketModel.findOne({user: userId}).populate('user').exec();
 
         res.json(basket);
