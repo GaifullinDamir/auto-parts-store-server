@@ -1,27 +1,36 @@
 import PartModel from '../models/part.js';
 import PartInfoModel from '../models/partInfo.js';
+import BrandModel from '../models/brand.js';
+import TypeModel from '../models/type.js';
 
 export const createPart = async (req, res) => {
     try {
-        let {name, price, imgUrl, brandId, typeId, info} = req.body;
+        // console.log(req.body);
+        const {name, price, imgUrl, brandId, typeId, info} = req.body;
 
+        const brand = await BrandModel.findOne({_id: brandId});
+        const type = await TypeModel.findOne({_id: typeId});
+
+        console.log(brand);
+        console.log(type);
+        
         const doc = new PartModel({
             name,
             price,
             imgUrl,
-            brandId,
-            typeId
+            brand,
+            type,
         });
 
         const part = await doc.save();
 
         if (info) {
-            info = JSON.parse(info)
-            info.forEach(info =>
-                PartInfo.create({
+            let info_temp = JSON.parse(info);
+            info_temp.forEach(info =>
+                PartInfoModel.create({
                     title: info.title,
                     description: info.description,
-                    partId: part._id
+                    part: part._id
                 })
             );
         };

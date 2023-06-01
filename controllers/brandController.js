@@ -34,7 +34,7 @@ export const getAll = async (req, res) => {
 export const getOne = async(req, res) => {
     try {
         const brandId = req.params.id;
-        const brand = await BasketModel.findOne({_id: brandId});
+        const brand = await BrandModel.findOne({_id: brandId});
 
         res.json(brand);
     } catch (error) {
