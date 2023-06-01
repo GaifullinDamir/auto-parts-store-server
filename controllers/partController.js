@@ -45,16 +45,36 @@ export const createPart = async (req, res) => {
 };
 
 export const getAllParts = async (req, res) => {
-    try {
-        const parts = await PartModel.find();
+    try { 
+        let {brandId, typeId, limit, page} = req.query
+        page = page || 1
+        limit = limit || 9
+        let offset = page * limit - limit
+        let parts;
 
-        res.json(parts);
+        const brand = await BrandModel.findOne({_id: brandId});
+        const type = await TypeModel.findOne({_id: typeId});
+
+        if (!brandId && !typeId) {
+            parts = await PartModel.find().skip(offset).limit(limit);
+        }
+        if (brandId && !typeId) {
+            parts = await PartModel.find({brand}).skip(offset).limit(limit);
+        }
+        if (!brandId && typeId) {
+            parts = await PartModel.find({type}).skip(offset).limit(limit);
+        }
+        if (brandId && typeId) {
+            parts = await PartModel.find({brand, type}).skip(offset).limit(limit);
+        }
+        return res.json(parts);
     } catch (error) {
         console.log('Failed to get parts: ', error);
         res.status(500).json({
             message: 'Failed to get parts.',
         });
     }
+
 }
 
 export const getOnePart = async (req, res) => {
