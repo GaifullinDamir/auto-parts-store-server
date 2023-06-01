@@ -80,7 +80,7 @@ export const getAllParts = async (req, res) => {
 export const getOnePart = async (req, res) => {
     try {
         const partId = req.params.id;
-        const part = await BasketModel.findOne({_id: partId});
+        const part = await PartModel.findOne({_id: partId});
 
         res.json(part);
     } catch (error) {
@@ -158,8 +158,10 @@ export const removePart = async (req, res) => {
 
 export const getPartInfo = async (req, res) => {
     try {
-        const partId = req.params.id;
-        const partInfo = await PartInfoModel.findOne({part: partId});
+        const partId = req.params.partId;
+        // const part = await PartModel.findOne({_id: partId});
+        // console.log(part);
+        const partInfo = await PartInfoModel.find({part: partId});
 
         res.json(partInfo);
     } catch (error) {
