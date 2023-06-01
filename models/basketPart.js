@@ -16,11 +16,6 @@ const BasketPartSchema = new mongoose.Schema({
         require: true,
         default: ''
     },
-    phoneNumber:{
-        type: String,
-        require: true,
-        default: ''
-    },
     orderIsPaid:{
         type: Boolean,
         required: true,

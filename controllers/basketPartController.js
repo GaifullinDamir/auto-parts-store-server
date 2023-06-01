@@ -1,10 +1,19 @@
 import BasketPartModel from '../models/basketPart.js';
+import BasketModel from '../models/basket.js';
+import PartModel from '../models/part.js'
 
 export const create = async (req, res) => {
     try {
+        const basket = BasketModel.find({basket: req.body.basketId});
+        const part = PartModel.find({part:req.body.partId});
+
         const doc = new BasketPartModel({
-            basket: req.body.basketId,
-            part: req.body.partId,
+            fullname: req.body.fullname,
+            phoneNumber: req.body.phoneNumber,
+            address: req.body.address,
+            orderIsPaid: req.body.orderIsPaid,
+            basket,
+            part,
         })
 
         const basketPart = await doc.save();
@@ -17,6 +26,29 @@ export const create = async (req, res) => {
         });
     }
 };
+
+export const update = async (req, res) => {
+    try{
+        const basketPartId = req.params.id;
+        await BasketPartModel.updateOne({
+            _id: basketPartId
+        }, {
+            ullname: req.body.fullname,
+            phoneNumber: req.body.phoneNumber,
+            address: req.body.address,
+            orderIsPaid: req.body.orderIsPaid,
+        })
+        
+        res.json({
+            success: true,
+        })
+    } catch (error) {
+        console.log('The BasketPart update failed.: ', error);
+        res.status(500).json({
+            message: 'The BasketPart update failed.',
+        });
+    }
+}; 
 
 export const remove = async (req, res) => {
     try {
