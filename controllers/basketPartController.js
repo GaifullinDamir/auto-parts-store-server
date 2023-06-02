@@ -26,11 +26,11 @@ export const create = async (req, res) => {
     }
 };
 
-export const getAll = async (req, res) => {
+export const getConcreteAll = async (req, res) => {
     try {
         const basketId = req.params.basketId;
-        const baskets = await BasketPartModel.find({basket: basketId}).populate('part').exec();
-        res.json(baskets);
+        const basketParts = await BasketPartModel.find({basket: basketId}).populate('part').exec();
+        res.json(basketParts);
     } catch (error) {
         console.log('Failed to get basket parts information: ', error);
         res.status(500).json({
@@ -38,6 +38,19 @@ export const getAll = async (req, res) => {
         });
     }
 };
+
+export const getAll = async (req, res) => {
+    try {
+        const basketParts = await BasketPartModel.find().populate('part').exec();
+        res.json(basketParts);
+    } catch (error) {
+        console.log('Failed to get basket parts information: ', error);
+        res.status(500).json({
+            message: 'Failed to get basket parts information.',
+        });
+    }
+};
+
 
 export const getOne = async(req, res) => {
     try {
@@ -79,27 +92,12 @@ export const remove = async (req, res) => {
     try {
         const basketPartId = req.params.id;
 
-        BasketPartModel.findOneAndDelete({
+        const result = await BasketPartModel.findOneAndDelete({
                 _id: basketPartId
-            },
-            (error, doc) => {
-                if (error) {
-                    console.log('Error when deleting an item from the basket: ', error);
-                    return res.status(500).json({
-                        message: 'Error when deleting an item from the basket.',
-                    });
-                }
-
-                if (!doc) {
-                    return res.status(404).json({
-                        message: 'Basket-part not found.',
-                    })
-                }
-
-                res.json({
-                    success: true
-                });
             });
+        res.json({
+            success: true
+        });
     } catch (error) {
         console.log('Error when deleting an item from the basket: ', error);
         return res.status(500).json({
