@@ -4,4 +4,3 @@ export * as BasketPartController from './basketPartController.js';
 export * as PartController from './partController.js';
 export * as BrandController from './brandController.js';
 export * as TypeController from './typeController.js';
-export * as RatingController from './ratingController.js';

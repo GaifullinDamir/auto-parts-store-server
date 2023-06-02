@@ -52,19 +52,25 @@ export const getAllParts = async (req, res) => {
         const brand = await BrandModel.findOne({_id: brandId});
         const type = await TypeModel.findOne({_id: typeId});
 
+        let count;
+
         if (!brandId && !typeId) {
             parts = await PartModel.find().skip(offset).limit(limit);
+            count = await PartModel.count().exec();
         }
         if (brandId && !typeId) {
             parts = await PartModel.find({brand}).skip(offset).limit(limit);
+            count = await PartModel.count({brand}).exec();
         }
         if (!brandId && typeId) {
             parts = await PartModel.find({type}).skip(offset).limit(limit);
+            count = await PartModel.count({type}).exec();
         }
         if (brandId && typeId) {
             parts = await PartModel.find({brand, type}).skip(offset).limit(limit);
+            count = await PartModel.count({brand, type}).exec();
         }
-        return res.json(parts);
+        return res.json({parts, count});
     } catch (error) {
         console.log('Failed to get parts: ', error);
         res.status(500).json({

@@ -4,7 +4,7 @@ import PartModel from '../models/part.js'
 
 export const create = async (req, res) => {
     try {
-        const basket = await BasketModel.findOne({_id: '6478edc7ca9b158f3ac2ccb2'});
+        const basket = await BasketModel.findOne({_id: req.body.basketId});
         const part = await PartModel.findOne({_id: req.body.partId});
         const doc = new BasketPartModel({
             fullname: req.body.fullname,
