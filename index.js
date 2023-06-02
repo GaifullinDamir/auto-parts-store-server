@@ -74,8 +74,8 @@ app.post('/api/basket', checkAuth, BasketController.create);
 app.get('/api/basket/:userId', checkAuth, BasketController.getOne);
 
 app.post('/api/basket-part', checkAuth, BasketPartController.create);
-app.get('/api/basket-part/:id', checkAuth, BasketPartController.getAll);
-app.get('/api/basket-part/:id', checkAuth, BasketPartController.getOne);
+app.get('/api/basket-part/:basketId', checkAuth, BasketPartController.getAll);
+app.get('/api/one-basket-part/:basketPartId', checkAuth, BasketPartController.getOne);
 app.patch('/api/basket-part/:id', checkAuth, BasketPartController.update);
 app.delete('/api/basket-part/:id', checkAuth, BasketPartController.remove);
 

@@ -28,7 +28,7 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
     try {
-        basketId = req.params.id;
+        const basketId = req.params.basketId;
         const baskets = await BasketPartModel.find({basket: basketId}).populate('part').exec();
         res.json(baskets);
     } catch (error) {
@@ -41,9 +41,8 @@ export const getAll = async (req, res) => {
 
 export const getOne = async(req, res) => {
     try {
-        const basketPartId = req.params.id;
-        const basketPart = await BasketModel.findOne({_id: basketPartId}).populate('user').exec();
-
+        const basketPartId = req.params.basketPartId;
+        const basketPart = await BasketPartModel.findOne({_id: basketPartId}).populate('part').exec();
         res.json(basketPart);
     } catch (error) {
         console.log('Failed to get basket information: ', error);
@@ -59,7 +58,7 @@ export const update = async (req, res) => {
         await BasketPartModel.updateOne({
             _id: basketPartId
         }, {
-            ullname: req.body.fullname,
+            fullname: req.body.fullname,
             phoneNumber: req.body.phoneNumber,
             address: req.body.address,
             orderIsPaid: req.body.orderIsPaid,
