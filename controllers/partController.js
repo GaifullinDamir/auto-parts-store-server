@@ -11,9 +11,6 @@ export const createPart = async (req, res) => {
         const brand = await BrandModel.findOne({_id: brandId});
         const type = await TypeModel.findOne({_id: typeId});
 
-        console.log(brand);
-        console.log(type);
-        
         const doc = new PartModel({
             name,
             price,

@@ -10,11 +10,6 @@ const PartSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    rating: {
-        type: Number,
-        required: true, 
-        default: 0
-    },
     imgUrl: {
         type: String,
         reqired: true
